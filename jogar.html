@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modo Jogar - Math Fácil</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('imagens/fundo-jogo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #003366;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 18px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    #saudacao {
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #004080;
+    }
+
+    #escolhaSubsistema button {
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #escolhaSubsistema button:hover {
+      background-color: #005fa3;
+    }
+
+    .pergunta {
+      font-size: 40px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    ul.opcoes {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul.opcoes li {
+      margin: 10px 0;
+    }
+
+    .opcao-btn {
+      display: block;
+      width: 90%;
+      padding: 12px;
+      font-size: 25px;
+      font-weight: bold;
+      background-color: #003366;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .opcao-btn:hover {
+      background-color: #fff8e1;
+    }
+
+    .correta {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724;
+    }
+
+    .incorreta {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24;
+    }
+
+    #temporizador {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: red;
+    }
+
+    .botoes-jogo {
+      margin-top: 25px;
+    }
+
+    .botao-voltar, .botao-responder {
+      padding: 10px 20px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .botao-voltar:hover, .botao-responder:hover {
+      background-color: #005599;
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      font-size: 14px;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      animation: mover 20s linear infinite;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    @keyframes mover {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 MODO JOGAR 🧠</h1>
+<img src="bandeira-angola.png" alt="Bandeira de Angola" class="bandeira">
+
+    <div id="saudacao"></div>
+
+    <!-- Botões de subsistema -->
+    <div id="escolhaSubsistema">
+      <button onclick="iniciarJogo('Primário')">🧒 Ensino Primário</button>
+      <button onclick="iniciarJogo('I Ciclo')">🧠 Iº Ciclo</button>
+      <button onclick="iniciarJogo('Médio')">📐 Ensino Médio</button>
+      <button onclick="iniciarJogo('Superior')">🎓 Ensino Superior</button>
+    </div>
+
+    <!-- Área do jogo -->
+    <div id="areaJogo" style="display: none;">
+      <div id="pergunta" class="pergunta"></div>
+      <ul id="opcoes" class="opcoes"></ul>
+      <div id="temporizador">⏱️</div>
+
+      <div class="botoes-jogo">
+        <a href="index.html" class="botao-voltar">🏠 Voltar</a>
+        <button onclick="responder()" class="botao-responder">✅ Responder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts de dados -->
+  <script src="dados/questoes_primário.js"></script>
+  <script src="dados/questoes_i_ciclo.js"></script>
+  <script src="dados/questoes_médio.js"></script>
+  <script src="dados/questoes_superior.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Saudação personalizada -->
+  <script>
+    const nome = localStorage.getItem("usuario") || "Estudante";
+    document.getElementById("saudacao").innerHTML = `Olá, <strong>${nome}</strong>! Escolha o subsistema para começar o jogo. Boa sorte! 🍀`;
+  </script>
+
+  <!-- Rodapé fixo -->
+  <footer>
+    __Desenvolvido por Tchipepe Technology • IBAN: 004000008787638610108 • Express: 929311220 • PayPal: leonardonumatchipepes@gmail.com
+  </footer>
+</body>
+</html>

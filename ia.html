@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Assistente IA • Math Fácil PRO TOTAL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#0a1624;color:#e9f2ff;display:flex;flex-direction:column;min-height:100vh;}
+header{display:flex;justify-content:center;align-items:center;padding:12px;background:rgba(0,0,0,0.45);}
+header h1{margin:0;}
+.wrap{flex:1;display:flex;gap:10px;padding:10px;max-width:1200px;margin:0 auto;width:100%;}
+aside{width:250px;background:rgba(255,255,255,0.08);border-radius:12px;padding:12px;flex-shrink:0;}
+.chip{display:block;width:100%;margin:6px 0;padding:10px;border-radius:10px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);cursor:pointer;font-size:14px;}
+.chip:hover{background:rgba(0,198,255,0.2);}
+.main{flex:1;display:flex;flex-direction:column;background:rgba(255,255,255,0.08);border-radius:12px;padding:10px;}
+.msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:70%;padding:10px;border-radius:12px;line-height:1.4;word-wrap:break-word;opacity:0;animation:fadeIn 0.4s forwards;}
+.bot{align-self:flex-start;background:rgba(11,43,79,0.9);color:#e9f2ff;position:relative;}
+.me{align-self:flex-end;background:rgba(13,71,161,0.95);color:#fff;}
+.copy{position:absolute;bottom:6px;right:6px;font-size:12px;cursor:pointer;}
+textarea{flex:1;min-height:40px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);}
+.inputbar{display:flex;gap:6px;margin-top:8px;}
+canvas{margin-top:20px;background:#fff;border-radius:10px;}
+.tooltip{position:relative;cursor:pointer;}
+.tooltip:hover::after{content:attr(data-tip);position:absolute;left:0;top:100%;background:#000;color:#fff;padding:5px 8px;border-radius:6px;white-space:pre-line;z-index:10;font-size:12px;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+</style>
+</head>
+<body>
+
+<header><h1>Assistente IA Math Fácil PRO TOTAL</h1></header>
+
+<div class="wrap">
+<aside>
+<h3>📚 Atalhos</h3>
+<button class="chip" data-prompt="3x+6=0">Equação 1º grau</button>
+<button class="chip" data-prompt="2x^2-4x-6=0">Equação 2º grau</button>
+<button class="chip" data-prompt="x^3+2x^2+4 / x+1">Divisão polinomial</button>
+<button class="chip" data-prompt="5+3*2">Operação básica</button>
+<button class="chip" data-prompt="sen(30)">Trigonometria básica</button>
+<button class="chip" data-prompt="f(x)=x^2-4x+3">Gráfico função quadrática</button>
+<button class="chip" data-prompt="Sistema: 2x+y=5, x-y=1">Sistema 2x2</button>
+<button class="chip" data-prompt="PA: a1=2, r=3, n=5">Progressão Aritmética</button>
+<h3 style="margin-top:14px;">💾 Exportar/Importar</h3>
+<button class="chip" id="exportar">Exportar chat (.txt)</button>
+<button class="chip" id="importar">Importar chat</button>
+<input type="file" id="fileInput" style="display:none">
+</aside>
+
+<div class="main">
+<div id="msgs" class="msgs"></div>
+<canvas id="grafico"></canvas>
+<div class="inputbar">
+<textarea id="entrada" placeholder="Digite uma equação, operação, problema ou escolha um atalho"></textarea>
+<button id="enviar">IA 🤖</button>
+</div>
+</div>
+</div>
+
+<script>
+let chart;
+
+// ===== Digitação animada =====
+function typeEffect(el,text,delay=10){
+  el.innerText="";
+  let i=0;
+  let interval=setInterval(()=>{
+    if(i<text.length){el.innerText+=text[i++];}else{clearInterval(interval);}
+  },delay);
+}
+
+// ===== Gráfico função quadrática =====
+function desenharGrafico(a,b,c){
+  const ctx=document.getElementById("grafico");
+  let x=[],y=[];
+  for(let i=-10;i<=10;i+=0.5){ x.push(i); y.push(a*i*i+b*i+c); }
+  if(chart){ chart.destroy(); chart=null; }
+  chart=new Chart(ctx,{
+    type:'line',
+    data:{labels:x,datasets:[{label:'f(x)',data:y,borderColor:'blue',borderWidth:2,tension:0.3}]},
+    options:{responsive:true}
+  });
+}
+
+// ===== Equação 1º grau =====
+function resolver1Grau(eq){
+  eq=eq.replace(/\s/g,"").replace("=0","");
+  let match=eq.match(/([+-]?\d*)x([+-]?\d+)?/);
+  if(!match) return {resposta:"Não reconhecido",tooltip:""};
+  let a=parseFloat(match[1])||1;
+  let b=parseFloat(match[2])||0;
+  let x=-b/a;
+  return {resposta:`Equação 1º grau\nx=${x}`, tooltip:`Passo a passo:\n${a}*x + (${b}) = 0\nx = -(${b})/${a} = ${x}`};
+}
+
+// ===== Equação 2º grau =====
+function resolver2Grau(eq){
+  eq=eq.replace("=0","").replace(/\s/g,"");
+  let a=parseFloat((eq.match(/([+-]?\d*)x\^2/)||[,"1"])[1]||1);
+  let b=parseFloat((eq.match(/([+-]?\d*)x(?!\^)/)||[,"0"])[1]||0);
+  let c=parseFloat((eq.split(/x(?!\^)/)[1])||0);
+  let delta=b*b-4*a*c;
+  let x1,x2;
+  if(delta>=0){x1=(-b+Math.sqrt(delta))/(2*a); x2=(-b-Math.sqrt(delta))/(2*a);}
+  else{x1=(-b/(2*a))+" + i"+(Math.sqrt(-delta)/(2*a)); x2=(-b/(2*a))+" - i"+(Math.sqrt(-delta)/(2*a));}
+  desenharGrafico(a,b,c);
+  return {resposta:`Equação 2º grau\nΔ=${delta}\nX1=${x1}\nX2=${x2}`, tooltip:`Passo a passo:\nΔ=b²-4ac=${b}²-4*${a}*${c}=${delta}\nX1=(-b+√Δ)/2a=${x1}\nX2=(-b-√Δ)/2a=${x2}`};
+}
+
+// ===== Divisão polinomial real =====
+function divisaoPolinomio(input){
+  try{
+    let [num,den]=input.split("/");
+    num=num.replace(/\s/g,""); den=den.replace(/\s/g,"");
+    function coefArr(poly){
+      let res=[];
+      poly=poly.replace(/-/g,"+-").split("+").filter(x=>x);
+      poly.forEach(p=>{
+        if(p.includes("x^")){ let [c,e]=p.split("x^"); res[parseInt(e)]=parseFloat(c)||1;}
+        else if(p.includes("x")){ res[1]=parseFloat(p)||1;}
+        else{ res[0]=parseFloat(p);}
+      });
+      return res;
+    }
+    function pad(arr,len){ while(arr.length<len)arr.push(0); return arr;}
+    let numArr=coefArr(num), denArr=coefArr(den);
+    let degNum=numArr.length-1, degDen=denArr.length-1;
+    numArr=pad(numArr,degNum+1); denArr=pad(denArr,degNum+1);
+    let quoc=[], resto=numArr.slice();
+    for(let i=degNum;i>=degDen;i--){
+      let coef=resto[i]/denArr[degDen];
+      quoc[i-degDen]=coef;
+      for(let j=0;j<=degDen;j++){resto[i-degDen+j]-=coef*denArr[j];}
+    }
+    quoc=quoc.map(x=>x||0); resto=resto.slice(0,degDen).map(x=>x||0);
+    let qstr=quoc.map((v,i)=>v+"x^"+i).reverse().join(" + ").replace(/\+\s-\s/g,"- ");
+    let rstr=resto.map((v,i)=>v+"x^"+i).reverse().join(" + ").replace(/\+\s-\s/g,"- ");
+    return {resposta:`Divisão de polinômios\nQuociente: ${qstr}\nResto: ${rstr}`,tooltip:`Passo a passo:\nDivisão feita coeficiente a coeficiente.`};
+  }catch{return {resposta:"Erro",tooltip:""};}
+}
+
+// ===== Sistema 2x2 =====
+function resolverSistema2x2(input){
+  try{
+    let eqs=input.replace("Sistema:","").split(",");
+    let a1,b1,c1,a2,b2,c2;
+    let m1=eqs[0].match(/([+-]?\d*)x([+-]?\d*)y=([+-]?\d+)/);
+    let m2=eqs[1].match(/([+-]?\d*)x([+-]?\d*)y=([+-]?\d+)/);
+    if(!m1||!m2) return {resposta:"Não reconhecido",tooltip:""};
+    a1=parseFloat(m1[1])||1; b1=parseFloat(m1[2])||1; c1=parseFloat(m1[3]);
+    a2=parseFloat(m2[1])||1; b2=parseFloat(m2[2])||1; c2=parseFloat(m2[3]);
+    let det=a1*b2 - a2*b1;
+    if(det===0) return {resposta:"Sistema sem solução única",tooltip:"Determinante = 0"};
+    let x=(c1*b2 - c2*b1)/det;
+    let y=(a1*c2 - a2*c1)/det;
+    return {resposta:`Sistema 2x2\nx=${x}\ny=${y}`,tooltip:`Passo a passo:\nDeterminante = ${det}\nx=(c1*b2-c2*b1)/det = ${x}\ny=(a1*c2-a2*c1)/det = ${y}`};
+  }catch{return {resposta:"Erro",tooltip:""};}
+}
+
+// ===== PA =====
+function resolverPA(input){
+  try{
+    let m=input.match(/PA: a1=(\d+), r=(\d+), n=(\d+)/);
+    if(!m) return {resposta:"Não reconhecido",tooltip:""};
+    let a1=parseFloat(m[1]), r=parseFloat(m[2]), n=parseFloat(m[3]);
+    let seq=[]; for(let i=0;i<n;i++){seq.push(a1+i*r);}
+    let soma=n*(2*a1+(n-1)*r)/2;
+    return {resposta:`PA: Sequência=[${seq.join(", ")}]\nSoma=${soma}`,tooltip:`Passo a passo:\na_n = a1 + (n-1)r\nSoma = n*(2*a1+(n-1)*r)/2`};
+  }catch{return {resposta:"Erro",tooltip:""};}
+}
+
+// ===== Interpretação de problemas simples =====
+function interpretarProblema(text){
+  let numeros=text.match(/\d+/g);
+  if(!numeros || numeros.length<2) return {resposta:"Não foi possível interpretar",tooltip:"Tente escrever números e relação entre eles."};
+  let x=parseInt(numeros[0]), y=parseInt(numeros[1]);
+  let eq=`x + y = ${x+y}`;
+  return {resposta:`Problema interpretado: ${eq}`, tooltip:`Passo a passo:\nSomando os números identificados: ${x}+${y}=${x+y}`};
+}
+
+// ===== Resolver entrada =====
+function resolver(input){
+  input=input.trim();
+  let resposta="", tooltip="";
+  try{
+    if(/^[0-9+\-*/().]+$/.test(input)){resposta="Resultado: "+eval(input);}
+    else if(input.includes("x") && input.includes("=") && !input.includes("x^2")){let r=resolver1Grau(input);resposta=r.resposta;tooltip=r.tooltip;if(chart){chart.destroy();}}
+    else if(input.includes("x^2")){let r=resolver2Grau(input);resposta=r.resposta;tooltip=r.tooltip;}
+    else if(input.includes("/")){let r=divisaoPolinomio(input);resposta=r.resposta;tooltip=r.tooltip;if(chart){chart.destroy();}}
+    else if(input.startsWith("sen")||input.startsWith("cos")||input.startsWith("tan")){
+      let fn=input.slice(0,3), n=parseFloat(input.slice(3));
+      let val=fn=="sen"?Math.sin(n*Math.PI/180):fn=="cos"?Math.cos(n*Math.PI/180):Math.tan(n*Math.PI/180);
+      resposta=`${fn}(${n}) = ${val.toFixed(4)}`;
+      tooltip=`Passo a passo:\nConvertido para radianos: ${n}*π/180\nResultado: ${val.toFixed(4)}`;
+      if(chart){chart.destroy();}
+    }
+    else if(input.startsWith("Sistema:")){let r=resolverSistema2x2(input);resposta=r.resposta;tooltip=r.tooltip;if(chart){chart.destroy();}}
+    else if(input.startsWith("PA:")){let r=resolverPA(input);resposta=r.resposta;tooltip=r.tooltip;if(chart){chart.destroy();}}
+    else{let r=interpretarProblema(input);resposta=r.resposta;tooltip=r.tooltip;if(chart){chart.destroy();}}
+    return {resposta,tooltip};
+  }catch{return {resposta:"Erro",tooltip:""};}
+}
+
+// ===== Adicionar mensagem =====
+function addMsg(text,from='bot',tooltip=''){
+  const msgs=document.getElementById("msgs");
+  const div=document.createElement("div");
+  div.className='msg '+from;
+  if(tooltip) div.classList.add('tooltip'), div.setAttribute('data-tip',tooltip);
+  msgs.appendChild(div);
+  typeEffect(div,text,10);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ===== Botão enviar =====
+document.getElementById("enviar").addEventListener("click",()=>{
+  const val=document.getElementById("entrada").value;
+  if(!val) return;
+  addMsg(val,'me');
+  setTimeout(()=>{ const r=resolver(val); addMsg(r.resposta,'bot',r.tooltip); },400);
+});
+
+// ===== Atalhos sidebar =====
+document.querySelectorAll(".chip").forEach(b=>{b.addEventListener("click",()=>{document.getElementById("entrada").value=b.dataset.prompt;});});
+
+// ===== Exportar chat =====
+document.getElementById("exportar").addEventListener("click",()=>{
+  const msgs=document.querySelectorAll("#msgs .msg");
+  let txt="";
+  msgs.forEach(m=>{txt+=m.innerText+"\n";});
+  const blob=new Blob([txt],{type:"text/plain"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download="chat_mathfacil.txt"; a.click(); URL.revokeObjectURL(url);
+});
+
+// ===== Importar chat =====
+document.getElementById("importar").addEventListener("click",()=>{document.getElementById("fileInput").click();});
+document.getElementById("fileInput").addEventListener("change",(e)=>{
+  const file=e.target.files[0];
+  const reader=new FileReader();
+  reader.onload=function(){document.getElementById("msgs").innerText=this.result;};
+  reader.readAsText(file);
+});
+</script>
+
+</body>
+</html>

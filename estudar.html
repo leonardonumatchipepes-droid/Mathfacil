@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 Estudar - Math Fácil</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Reset e Básico */
+* {box-sizing:border-box; margin:0; padding:0;}
+body {font-family:"Merriweather", serif; background:#f5f6fa; color:#222;}
+a {text-decoration:none; color:#007acc;} 
+a:hover {text-decoration:underline;}
+
+/* Container */
+.container {display:flex; min-height:100vh; transition: all 0.3s ease;}
+
+/* Header */
+header {
+    width:100%; padding:15px 30px; background:linear-gradient(90deg,#0f1113,#222);
+    display:flex; justify-content:space-between; align-items:center;
+    color:#ffd166; position:fixed; top:0; left:0; right:0; z-index:1000;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+header h1 {font-size:20px;}
+header img {width:40px; height:auto; border-radius:50%;}
+
+/* Sidebar */
+.sidebar {
+    width:220px; background:#0f1113; color:#fff;
+    padding-top:80px; display:flex; flex-direction:column; align-items:center;
+    gap:20px; position:fixed; top:0; bottom:0; left:0;
+    box-shadow:2px 0 12px rgba(0,0,0,0.5); transition: transform 0.3s ease;
+}
+.book {
+    display:flex; flex-direction:column; align-items:center; cursor:pointer;
+}
+.book img {
+    width:70px; height:70px; border-radius:12px;
+    transition: transform 0.4s, box-shadow 0.3s;
+    box-shadow:0 6px 15px rgba(0,0,0,0.4);
+}
+.book img:hover {
+    transform: scale(1.15) rotateY(-10deg) rotateX(5deg);
+    box-shadow:0 10px 20px #ffd166;
+}
+.book span {margin-top:6px; font-size:14px; text-align:center;}
+
+/* Sub-livros */
+.sub-books {
+    display: none; /* Escondidos por padrão */
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+}
+.book.main-book {
+    background:#111; padding:5px; border-radius:8px;
+}
+.book.main-book:hover {background:#222;}
+
+/* Conteúdo */
+.content {
+    margin-left:220px; padding:100px 20px 20px 20px;
+    flex:1; display:flex; flex-direction:column; align-items:center; transition: all 0.3s ease;
+}
+iframe {
+    width:100%; max-width:950px; height:650px; border-radius:12px; border:none;
+    box-shadow:0 6px 20px rgba(0,0,0,0.2); transition: transform 0.5s ease;
+}
+iframe.abrindo {animation:abrirLivro 0.6s forwards;}
+.message {
+    max-width:950px; background:#fff8c6; padding:15px 20px; border-radius:10px;
+    margin-top:-60px; margin-bottom:20px; font-size:16px; color:#333;
+    box-shadow:0 6px 15px rgba(0,0,0,0.15); opacity:0; transition: opacity 0.6s;
+}
+.voltar {
+    background:#003366; color:#fff; padding:12px 25px; border-radius:8px;
+    font-size:16px; transition:all 0.3s ease;
+}
+.voltar:hover {background:#005599; transform:translateY(-2px);}
+
+/* Animação abrir livro */
+@keyframes abrirLivro{
+    0% {transform:scaleX(0); opacity:0;}
+    50%{transform:scaleX(1.1); opacity:1;}
+    100%{transform:scaleX(1); opacity:1;}
+}
+
+/* Responsivo */
+@media(max-width:900px){
+    .container {flex-direction:column;}
+    .sidebar {flex-direction:row; width:100%; height:auto; justify-content:space-around; padding:10px 0; position:relative; box-shadow:none;}
+    .content {margin-left:0; width:100%; padding:20px 10px;}
+    iframe {height:400px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>ESTUDE COM MATH FÁCIL 📚</h1>
+    <img src="imagens/bandeira-angola.png" alt="Bandeira de Angola">
+</header>
+
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <!-- Ensino Primário -->
+        <div class="book main-book" onclick="toggleSub('primarioSub')">
+            <img src="imagens/primario.png" alt="Ensino Primário">
+            <span>Ensino Primário</span>
+        </div>
+        <div class="sub-books" id="primarioSub">
+            <div class="book" onclick="abrirPDF('pdfs/5_classe.pdf')">
+                <img src="imagens/5classe.png" alt="5ª Classe">
+                <span>5ª Classe</span>
+            </div>
+            <div class="book" onclick="abrirPDF('pdfs/6_classe.pdf')">
+                <img src="imagens/6classe.png" alt="6ª Classe">
+                <span>6ª Classe</span>
+            </div>
+        </div>
+
+        <!-- Iº Ciclo -->
+        <div class="book main-book" onclick="toggleSub('cicloSub')">
+            <img src="imagens/i_ciclo.png" alt="Iº Ciclo">
+            <span>Iº Ciclo</span>
+        </div>
+        <div class="sub-books" id="cicloSub">
+            <div class="book" onclick="abrirPDF('pdfs/7_classe.pdf')">
+                <img src="imagens/7classe.png" alt="7ª Classe">
+                <span>7ª Classe</span>
+            </div>
+            <div class="book" onclick="abrirPDF('pdfs/8_classe.pdf')">
+                <img src="imagens/8classe.png" alt="8ª Classe">
+                <span>8ª Classe</span>
+            </div>
+            <div class="book" onclick="abrirPDF('pdfs/9_classe.pdf')">
+                <img src="imagens/9classe.png" alt="9ª Classe">
+                <span>9ª Classe</span>
+            </div>
+        </div>
+
+        <!-- Ensino Médio -->
+        <div class="book" onclick="abrirPDF('pdfs/ensino_medio.pdf')">
+            <img src="imagens/medio.png" alt="Ensino Médio">
+            <span>Ensino Médio</span>
+        </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="content">
+        <iframe id="visorPDF" src=""></iframe>
+        <div class="message" id="mensagem">
+            Se tiver qualquer dúvida, fale com o <strong>assistente IA do Math Fácil</strong> ou <a href="ia.html">clique aqui</a>.
+        </div>
+        <a href="index.html" class="voltar">🏠 Voltar para o Início</a>
+    </div>
+</div>
+
+<script>
+// Mostrar/Ocultar sub-livros
+function toggleSub(id){
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === "flex") ? "none" : "flex";
+}
+
+// Abrir PDF no iframe
+function abrirPDF(caminho){
+    const visor = document.getElementById('visorPDF');
+    const msg = document.getElementById('mensagem');
+    visor.src = caminho;
+
+    visor.classList.remove('abrindo');
+    void visor.offsetWidth;
+    visor.classList.add('abrindo');
+
+    setTimeout(()=>{msg.style.opacity='1';},600);
+}
+</script>
+
+</body>
+</html>

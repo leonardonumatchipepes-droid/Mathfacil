@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Ícones e Configurações Mobile -->
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" type="image/png" href="icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Math Fácil">
+
+  <title>Math Fácil 📐</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: url("imagens/fundo-jogo.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+    }
+
+    header {
+      background-color: rgba(0, 51, 102, 0.85);
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header img.logo {
+      width: 60px;
+    }
+
+    header img.bandeira {
+      width: 40px;
+      border-radius: 5px;
+    }
+
+    h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 1.4em;
+    }
+
+    .container {
+      padding: 30px 20px;
+    }
+
+    .imagem-destaque {
+      width: 80%;
+      max-width: 380px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    #nomeInput {
+      padding: 12px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 300px;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .botoes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .botao {
+      padding: 14px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+      min-width: 120px;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .botao:hover {
+      transform: scale(1.08);
+    }
+
+    .botao.jogar { background-color: #003366; }
+    .botao.jogar:hover { background-color: #005599; }
+
+    .botao.treinar { background-color: #6a1b9a; }
+    .botao.treinar:hover { background-color: #8e24aa; }
+
+    .botao.estudar { background-color: #2e7d32; }
+    .botao.estudar:hover { background-color: #388e3c; }
+
+    .botao.ia { background-color: #2e7d37; }
+    .botao.estudar:hover { background-color: #386e3c; }
+
+    .botao.autor { background-color: #F3D500; }
+    .botao.autor:hover { background-color: #D4AF37; }
+
+    .botao.progresso { background-color: #000000; }
+    .botao.progresso:hover { background-color: #03a9f4; }
+
+    .botao.sobre { background-color: #FF0000; }
+    .botao.sobre:hover { background-color: #03a9f4; }
+
+    .botao.fechar { background-color: #b71c1c; }
+    .botao.fechar:hover { background-color: #e53935; }
+
+    .fechar-centro {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+    }
+
+    footer {
+      background-color: rgba(0, 51, 102, 0.85);
+      color: white;
+      font-size: 14px;
+      padding: 10px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      position: fixed;
+      bottom: 0;
+      animation: mover 20s linear infinite;
+    }
+
+    @keyframes mover {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+
+  <script>
+    function iniciarApp(destino) {
+      const nome = document.getElementById("nomeInput").value.trim();
+      if (nome === "") {
+        alert("Por favor, insira seu nome antes de continuar!");
+        return;
+      }
+      localStorage.setItem("usuario", nome);
+      window.location.href = destino;
+    }
+
+    function fecharApp() {
+      if (confirm("Deseja realmente sair do aplicativo?")) {
+        window.close();
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Logo Math Fácil" class="logo">
+    <h1> 📐 BEM-VINDO(A) AO MATH FÁCIL</h1>
+    <img src="imagens/bandeira-angola.png" alt="Bandeira de Angola" class="bandeira">
+  </header>
+
+  <div class="container">
+    <img src="imagens/foto1.png" alt="Ilustração Matemática" class="imagem-destaque"/>
+
+<div class="nomeInput-centro">
+    <input type="text" id="nomeInput" placeholder="Digite seu nome completo" />
+ </div>
+ 
+ <div class="botoes">
+  <button class="botao jogar" onclick="iniciarApp('jogar.html')">🎮 Jogar</button>
+  <button class="botao treinar" onclick="iniciarApp('treinar.html')">📘 Treinar</button>
+  <button class="botao estudar" onclick="iniciarApp('estudar.html')">📚 Estudar</button>
+  <button class="botao progresso" onclick="iniciarApp('progresso.html')">📊 Progresso</button>
+  <button class="botao ia" onclick="iniciarApp('ia.html')">🤖 Asistente I.A</button>
+  <a href="sobre.html" class="botao sobre">ℹ️ Sobre o App</a>
+  <a href="autor.html" class="botao autor">👤 Sobre o Autor</a>
+  </div>
+
+</div>
+
+    <div class="fechar-centro">
+      <button class="botao fechar" onclick="fecharApp()">❌ Fechar</button>
+    </div>
+  </div>
+
+  <footer>
+    Desenvolvido por Tchipepe Technology &nbsp;•&nbsp; IBAN PARA DOAÇÕES: 004000008787638610108 &nbsp;•&nbsp; PayPal: leonardonumatchipepes@gmail.com
+  </footer>
+
+</body>
+</html>

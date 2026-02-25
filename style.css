@@ -1,0 +1,264 @@
+
+/* Fundo com imagem */
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url("imagens/fundo-jogo.jpg"); /* coloque sua imagem aqui */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  color: #003366;
+  text-align: center;
+  position: relative;
+}
+
+/* Camada de escurecimento leve para legibilidade */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+}
+
+
+/* Títulos */
+h1 {
+  font-size: 32px;
+  color: #003366;
+  margin-bottom: 20px;
+}
+
+h5 {
+  font-size: 12px;
+  font-style: italic;
+  color: red;
+  margin-bottom: 20px;
+}
+
+
+/* Botões principais */
+button,
+.botao {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Cores personalizadas para botões */
+.botao-jogar { background-color: #003366; }
+.botao-treinar { background-color: #007B55; }
+.botao-estudar { background-color: #AF7AC5; }
+.botao-sobre { background-color: #FF8C00; }
+.botao-fechar { background-color: #C0392B; }
+
+.botao-jogar:hover { background-color: #005599; }
+.botao-treinar:hover { background-color: #009966; }
+.botao-estudar:hover { background-color: #BA68C8; }
+.botao-sobre:hover { background-color: #FFA733; }
+.botao-fechar:hover { background-color: #E74C3C; }
+
+/* Área de perguntas */
+.pergunta {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Opções como botões estilizados */
+.opcoes li {
+  list-style-type: none;
+  margin: 10px auto;
+  width: 80%;
+  padding: 12px;
+ background-color: #003366;!important;
+  
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.opcoes li:hover {
+  background-color: yellow;
+  color: #fff;
+}
+
+.selecionada {
+  border: 3px solid #ffc107;
+  background-color: yellow; !important;
+  color: red;
+ 
+}
+
+/* Cor correta e incorreta */
+.opcao-certa {
+  background-color: #2ecc71 !important;
+  color: green;
+  border: none;
+}
+
+.opcao-errada {
+  background-color: #e74c3c !important;
+  color: red;
+  border: none;
+}
+
+/* Temporizador */
+#temporizador {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: red;
+}
+
+/* Botões de responder e voltar */
+.botoes-jogo {
+  margin-top: 20px;
+}
+
+.botao-voltar,
+.botao-responder {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.botao-voltar:hover,
+.botao-responder:hover {
+  background-color: #005599;
+
+}
+
+/* Rodapé fixo com animação */
+footer {
+  background-color: #003366;
+  color: white;
+  font-size: 14px;
+  padding: 12px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: mover 20s linear infinite;
+  z-index: 10;
+}
+
+@keyframes mover {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  button,
+  .botao,
+  .botao-voltar,
+  .botao-responder {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .opcoes li {
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+
+}
+
+.saudacao {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.pergunta-texto {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.opcoes {
+  list-style: none;
+  padding: 0;
+}
+
+.opcoes li {
+  background-color: black;
+  color: white;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.opcoes li:hover {
+  background-color: #222;
+}
+
+.opcoes li.selecionada {
+  background-color: #555;
+}
+
+.opcao-certa {
+  background-color: green !important;
+}
+
+.opcao-errada {
+  background-color: red !important;
+}
+
+.botoes-rodape {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.botao-voltar {
+  background-color: #b71c1c;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botao-responder {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botao-voltar:hover {
+  background-color: #e53935;
+}
+
+.botao-responder:hover {
+  background-color: #388e3c;

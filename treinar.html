@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Treinar - Math Fácil</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>⚽ MODO TREINAR🕹🎮</h1>
+
+  <!-- Escolha do subsistema -->
+  <div id="selecionarSubsistema">
+    <p>Escolha o subsistema:</p>
+    <button onclick="carregarTemas('Primário')">🧒 Ensino Primário</button>
+    <button onclick="carregarTemas('I Ciclo')">🧠 I Ciclo</button>
+    <button onclick="carregarTemas('Médio')">📐 Ensino Médio</button>
+    <button onclick="carregarTemas('Superior')">🎓 Ensino Superior</button>
+  </div>
+
+
+  <!-- Área de perguntas -->
+   <div id="perguntaTreino" class="question-box" style="display:none;">
+   <h3><p id="treinoPergunta"></p></h3>
+<h5> Clique na opção correcta!</h5>
+    <button class="option-btn" id="T_A" onclick="responderTreino('A')"></button>
+    <button class="option-btn" id="T_B" onclick="responderTreino('B')"></button>
+    <button class="option-btn" id="T_C" onclick="responderTreino('C')"></button>
+    <button class="option-btn" id="T_D" onclick="responderTreino('D')"></button>
+
+    <div class="botoes-jogo" style="margin-top: 20px;">
+      
+    </div>
+  </div>
+
+<a href="index.html" class="botao-voltar">🏠 Voltar ao Menu</a>
+
+  <!-- Rodapé -->
+  <footer>
+    __Desenvolvido por Tchipepe Technology • IBAN: 004000008787638610108 • Express: 929311220 • PayPal: leonardonumatchipepes@gmail.com
+  </footer>
+
+  <!-- Bases de dados -->
+  <script src="dados/questoes_primário.js"></script>
+  <script src="dados/questoes_i_ciclo.js"></script>
+  <script src="dados/questoes_médio.js"></script>
+  <script src="dados/questoes_superior.js"></script>
+
+  <!-- Script principal -->
+  <script>
+    let questoesTreino = [];
+    let questaoAtualTreino = 0;
+
+    const todasQuestoesTreino = [
+      ...questoesPrimário,
+      ...questoesICiclo,
+      ...questoesMédio,
+      ...questoesSuperior
+    ];
+
+    function carregarTemas(subsistemaSelecionado) {
+      questoesTreino = todasQuestoesTreino.filter(q => q.subsistema === subsistemaSelecionado);
+      questoesTreino = embaralharArray(questoesTreino);
+      questaoAtualTreino = 0;
+
+      document.getElementById("selecionarSubsistema").style.display = "none";
+      document.getElementById("perguntaTreino").style.display = "block";
+
+      exibirQuestaoTreino();
+    }
+
+    function exibirQuestaoTreino() {
+      const q = questoesTreino[questaoAtualTreino];
+
+      if (!q) {
+        alert("🎉 Fim do treino! Você completou todas as questões🎇🎆.");
+        location.reload();
+        return;
+      }
+
+      document.getElementById("treinoPergunta").innerText = q.pergunta;
+      document.getElementById("T_A").innerText = `A) ${q.A}`;
+      document.getElementById("T_B").innerText = `B) ${q.B}`;
+      document.getElementById("T_C").innerText = `C) ${q.C}`;
+      document.getElementById("T_D").innerText = `D) ${q.D}`;
+    }
+
+    function responderTreino(alternativa) {
+      const q = questoesTreino[questaoAtualTreino];
+
+      if (alternativa === q.resposta) {
+        alert("✅ Correto!");
+      } else {
+        alert("❌ Errado!");
+      }
+
+      questaoAtualTreino++;
+      exibirQuestaoTreino();
+    }
+
+    function embaralharArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+  </script>
+</body>
+</html>

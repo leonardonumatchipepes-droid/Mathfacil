@@ -1,0 +1,108 @@
+<!DOCTYPE html><html style='font-size:17px'><head>  <meta charset=UTF-8>  <meta name='viewport' content='width=100%, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>  <title>app</title>  
+<link rel="stylesheet" href="/var/mobile/Containers/Data/Application/BCD3DBF8-75D2-44CB-8CA5-11A4D7B9CBE8/Library/Application Support/MarkDownResources/Styles/GitHub.css"/>
+<link rel="stylesheet" href="/var/mobile/Containers/Data/Application/BCD3DBF8-75D2-44CB-8CA5-11A4D7B9CBE8/Library/Application Support/MarkDownResources/Highlight/highlight-style/tomorrow.css"/>  
+<script src="/var/mobile/Containers/Data/Application/BCD3DBF8-75D2-44CB-8CA5-11A4D7B9CBE8/Library/Application Support/MarkDownResources/Highlight/highlightjs/highlight.min.js"></script>
+<script src="/var/mobile/Containers/Data/Application/BCD3DBF8-75D2-44CB-8CA5-11A4D7B9CBE8/Library/Application Support/MarkDownResources/Highlight/highlightjs/swift.min.js"></script>
+<script src="/var/mobile/Containers/Data/Application/BCD3DBF8-75D2-44CB-8CA5-11A4D7B9CBE8/Library/Application Support/MarkDownResources/MathJax/tex-mml-chtml.js"></script>  <script>hljs.initHighlightingOnLoad();</script>  <script type='text/x-mathjax-config'>MathJax.Hub.Config({'showProcessingMessages': false, 'messageStyle': 'none'});</script></head><body>  <p>// =========================<br>
+// Controle de Usuários<br>
+// =========================</p>
+
+<p>// Pega usuário ativo<br>
+function getUsuarioAtivo() {<br>
+  return localStorage.getItem(<q>usuario</q>);<br>
+}</p>
+
+<p>// Define usuário ativo<br>
+function setUsuarioAtivo(nome) {<br>
+  localStorage.setItem(<q>usuario</q>, nome);<br>
+}</p>
+
+<p>// =========================<br>
+// Registro de Progresso<br>
+// =========================</p>
+
+<p>function salvarProgresso(usuario, tema, acertou) {<br>
+  let dados = JSON.parse(localStorage.getItem(<q>progresso</q>)) || {};</p>
+
+<p>if (!dados[usuario]) {<br>
+    dados[usuario] = {<br>
+      total: 0,<br>
+      acertos: 0,<br>
+      erros: 0,<br>
+      dificuldades: {}<br>
+    };<br>
+  }</p>
+
+<p>dados[usuario].total++;<br>
+  if (acertou) {<br>
+    dados[usuario].acertos++;<br>
+  } else {<br>
+    dados[usuario].erros++;<br>
+    // registra dificuldade no tema<br>
+    dados[usuario].dificuldades[tema] =<br>
+      (dados[usuario].dificuldades[tema] || 0) + 1;<br>
+  }</p>
+
+<p>localStorage.setItem(<q>progresso</q>, JSON.stringify(dados));<br>
+}</p>
+
+<p>// =========================<br>
+// Leitura do Progresso<br>
+// =========================</p>
+
+<p>function obterProgresso(usuario) {<br>
+  const dados = JSON.parse(localStorage.getItem(<q>progresso</q>)) || {};<br>
+  return dados[usuario] || null;<br>
+}</p>
+
+<p>// =========================<br>
+// Exibir Progresso (para progresso.html)<br>
+// =========================</p>
+
+<p>function mostrarProgresso() {<br>
+  const usuario = getUsuarioAtivo();<br>
+  const dados = obterProgresso(usuario);</p>
+
+<p>if (!usuario) {<br>
+    document.getElementById(<q>resultado</q>).innerHTML =<br>
+      <q><p>⚠️ Nenhum usuário ativo. Volte ao início e insira seu nome.</p></q>;<br>
+    return;<br>
+  }</p>
+
+<p>if (!dados) {<br>
+    document.getElementById(<q>resultado</q>).innerHTML =<br>
+      <code>&lt;h2&gt;📊 Progresso de ${usuario}&lt;/h2&gt;<br>
+       &lt;p&gt;Ainda não existem registros de atividades.&lt;/p&gt;</code>;<br>
+    return;<br>
+  }</p>
+
+<p>let porcentagem = ((dados.acertos / dados.total) * 100).toFixed(1);</p>
+
+<p>let dificuldades = Object.keys(dados.dificuldades)<br>
+    .map(t =&gt; <code>&lt;li&gt;${t}: ${dados.dificuldades[t]} erros&lt;/li&gt;</code>)<br>
+    .join(&quot;&quot;);</p>
+
+<p>document.getElementById(<q>resultado</q>).innerHTML = <code><br>
+    &lt;h2&gt;📊 Progresso de ${usuario}&lt;/h2&gt;<br>
+    &lt;p&gt;Total de Questões: ${dados.total}&lt;/p&gt;<br>
+    &lt;p&gt;✅ Acertos: ${dados.acertos}&lt;/p&gt;<br>
+    &lt;p&gt;❌ Erros: ${dados.erros}&lt;/p&gt;<br>
+    &lt;p&gt;📈 Desempenho: ${porcentagem}%&lt;/p&gt;<br>
+    &lt;h3&gt;Temas com mais dificuldade:&lt;/h3&gt;<br>
+    &lt;ul&gt;${dificuldades || &quot;&lt;li&gt;Nenhuma dificuldade detectada&lt;/li&gt;&quot;}&lt;/ul&gt;<br>
+</code>;<br>
+}</p>
+
+<p>// =========================<br>
+// Funções para Jogo/Treino<br>
+// =========================</p>
+
+<p>function registrarResposta(tema, acertou) {<br>
+  const usuario = getUsuarioAtivo();<br>
+  if (!usuario) {<br>
+    alert(<q>Por favor, volte ao início e insira seu nome!</q>);<br>
+    return;<br>
+  }<br>
+  salvarProgresso(usuario, tema, acertou);<br>
+}</p>
+<script>window.webkit.messageHandlers.TextLoaded.postMessage('TextLoaded')</script></body></html>

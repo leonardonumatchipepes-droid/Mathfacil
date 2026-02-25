@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre o Autor - Math Fácil</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ====== LADO ESQUERDO (FOTO FIXA) ====== */
+    .left-panel {
+      width: 35%;
+      background: linear-gradient(180deg, #111, #0a0a0a);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-right: 3px solid #00c8ff55;
+    }
+
+    /* ===== Avatar com botão WhatsApp ===== */
+    .avatar-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .avatar {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 6px solid transparent;
+      background: linear-gradient(90deg, #ff00ff, #00c8ff, #ffcc00);
+      background-size: 300%;
+      animation: glow 6s linear infinite;
+      padding: 6px;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      image-rendering: auto; /* suaviza pixel*/
+    }
+
+    @keyframes glow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .left-panel h1 {
+      text-align: center;
+      font-size: 2em;
+      background: linear-gradient(90deg, #ff00ff, #00c8ff, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: brilho 6s linear infinite;
+    }
+
+    @keyframes brilho {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ===== Botão Light/Dark ===== */
+    .theme-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg,#00c8ff,#ff00ff);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+    .theme-button:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== Botão WhatsApp flutuante ===== */
+    .whatsapp-button {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background:#25D366;
+      color:white;
+      font-size: 1.5em;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .whatsapp-button:hover {
+      transform: scale(1.2);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    /* ====== LADO DIREITO (CONTEÚDO) ====== */
+    .right-panel {
+      margin-left: 35%;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .timeline {
+      max-width: 1000px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .timeline-item {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(0,200,255,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(255,0,255,0.5);
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 1.7em;
+      color: #00c8ff;
+    }
+
+    p, li {
+      color: #ccc;
+    }
+
+    ul {
+      margin: 10px 0 0 20px;
+    }
+
+    .frases {
+      font-style: italic;
+      color: #00c8ff;
+      border-left: 3px solid #00c8ff;
+      padding-left: 10px;
+      margin: 10px 0;
+    }
+
+    .botao-voltar {
+      display: block;
+      width: fit-content;
+      margin: 60px auto 0;
+      padding: 12px 25px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(90deg, #00c8ff, #ff00ff, #ffcc00, #00c8ff);
+      background-size: 300%;
+      animation: brilho 5s linear infinite;
+      box-shadow: 0 0 15px rgba(0,200,255,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .botao-voltar:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(255,0,255,0.7);
+    }
+
+    /* ===== Light Mode ===== */
+    body.light-mode {
+      background:#f5f5f5;
+      color:#0a0a0a;
+    }
+    body.light-mode .left-panel {
+      background: #e0e0e0;
+      border-right: 3px solid #00c8ff55;
+    }
+    body.light-mode .timeline-content {
+      background: rgba(0,0,0,0.05);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    body.light-mode h2 {
+      color: #ff00ff;
+    }
+    body.light-mode .frases {
+      color: #ff00ff;
+      border-left-color: #ff00ff;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .left-panel {
+        width: 100%;
+        position: relative;
+        border-right: none;
+        border-bottom: 3px solid #00c8ff55;
+      }
+      .right-panel {
+        margin-left: 0;
+      }
+
+      .theme-button {
+        top:10px;
+        right:10px;
+      }
+      .whatsapp-button {
+        bottom:-5px;
+        right:-5px;
+        width:40px;
+        height:40px;
+        font-size:1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Lado Esquerdo (Foto + Nome) -->
+  <div class="left-panel">
+
+    <!-- Botão Light/Dark -->
+    <button id="toggle-theme" class="theme-button">🌙/☀️</button>
+
+    <!-- Avatar com botão WhatsApp -->
+    <div class="avatar-wrapper">
+      <div class="avatar">
+        <img src="imagens/autor.png" alt="Foto do Autor">
+      </div>
+      <a href="https://api.whatsapp.com/send?phone=244953087529&text=Desejo%20saber%20mais%20sobre%20Math%20Fácil" target="_blank" class="whatsapp-button">
+        📱
+      </a>
+    </div>
+
+    <h1>🌟LEONARDO N. TCHIPEPE🌟</h1>
+
+  </div>
+
+  <!-- Lado Direito (Biografia + Timeline) -->
+  <div class="right-panel">
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>📚 Dados Pessoais</h2>
+          <p> <ul>
+          <p><strong>Leonardo Numa Tchipepe</strong>, nascido em 09 de junho de 2001, é um jovem angolano natural da cidade de Benguela, especificamente do bairro Calomanga. Filho primogênito de Rodrigues Tchipepe e Paulina Luísa, Tchipepe, como gosta de ser chamado e conhecido, tem 24 anos de idade e representa uma nova geração de educadores apaixonados pela transformação do ensino por meio da tecnologia e da inovação pedagógica.</p>
+          </ul></p>
+          <p class="frases">“O que não nos mata nos torna mais fortes e prósperos.”</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>📚 Formação acadêmica</h2>
+          <p> <ul>
+            <li>Técnico Médio em Matemática e Física, pelo Magistério BG-1021 Comandante Kwenha de Benguela.</li>
+            <li>Licenciando em Ensino de Matemática, no 4.º ano pelo ISCED – Benguela.</li>
+          </ul></p>
+          <p class="frases">“A matemática não é um bicho-papão, é uma chave para compreender o universo.”</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>🧠 Formações Técnicas e Profissionais</h2>
+          <ul>
+            <li>Inteligência Artificial Aplicada ao Ensino, Cozinha Escolar pelo IFSUL – Brasil (EAD).</li>
+            <li>Expertise em IA opção ChatGPT pela Academia de IA(EAD).</li>
+            <li>Expert Whatsap API pela Watti(EAD).</li>
+            <li>Educação Financeira, Finanças Públicas, Empreendedorismo, Administração Financeira, Arte de Falar em Público, Inteligência Artificial e Redes Neurais, Direito Administrativo,  — pelo IFRS/ Brasil (EAD).</li>
+            <li>Gestão de Pequenos Negócios pelo CLESE – Benguela.</li>
+            <li>Contabilidade, Gestão e Administração de Empresas pelo IS-Huambo.</li>
+            <li>Mestrado em Negócios de Rua (MBS) pela Interweave Solution.</li>
+            <li>Liderança Sênior, pela IASD – Missão Litoral de Angola.</li>
+            <li>Liderança Eficaz, pela HP life da HP foudation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>💼 Experiência</h2>
+          <ul>
+            <li>Professor de Matemática e Física no Iº Ciclo e Ensino Médio.</li>
+            <li>Criador da plataforma <b>Math Fácil.</b></li>
+            <li>Escritor de artigos científicos como <b>Math Fácil, Uso de IAs nas Escolas Primárias e Complexos Escolares em Menongue.</b></li>
+            <li>Consultor em Educação Digital.</li>
+            <li>Formador de Excelência em <b>Finanças, IAs, Tecnologias, Informática, Práticas Pedagógicas, Mentorias.</b></li>
+            <li>Palestrante de alta performance <b>Tecnologia, Finanças, Educação.</b></li>
+            <li>Desenvolvedor de soluções educativas com foco em IA.</li>
+            <li>Escritor do livro <b>Mentalidade Financeira Vencedora.</b></li>
+            <li>Escritor do livro <b>Por quê o meu dinheiro acaba antes do mês acabar?</b></li>
+            <li>Empreendedor e Empresário.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>🚀 Missão</h2>
+          <p>Tornar a aprendizagem matemática acessível, prática e encantadora, transformando obstáculos em conquistas.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>✨ Visão de Futuro</h2>
+          <p>Construir uma geração que não teme números, mas os domina para criar soluções, negócios e sonhos.</p>
+          <p class="frases">“Educação é liberdade. Matemática é poder.”</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>📱 Criador do App Math Fácil</h2>
+          <p>Tchipepe é o idealizador do <strong>Math Fácil</strong>, um aplicativo educacional inovador, que combina gamificação, inteligência artificial, prática supervisionada e reforço positivo com sons, cores e desafios. Criado para facilitar a aprendizagem da matemática nos subsistemas: Primário, I Ciclo, Ensino Médio e Ensino Superior.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h2>📝 Crítica</h2>
+          <p>Ainda que a inovação digital brilhe, não podemos esquecer a simplicidade: o giz, o quadro, o olhar professor-aluno. O equilíbrio entre tradição e tecnologia é o verdadeiro caminho.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <a href="index.html" class="botao-voltar">🏠 Voltar</a>
+  </div>
+
+  <script>
+    // Toggle Light/Dark
+    const toggleButton = document.getElementById('toggle-theme');
+    toggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+    });
+  </script>
+
+</body>
+</html>
